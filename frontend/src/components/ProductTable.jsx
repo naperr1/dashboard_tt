@@ -9,11 +9,14 @@ const ProductTable = () => {
   const [categories, setCategories] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     fetchProducts(page);
     fetchCategories();
   }, [page]);
+
+  const token = `Bearer ${accessToken}`;
 
   const fetchProducts = async (page) => {
     try {
@@ -27,7 +30,7 @@ const ProductTable = () => {
             direction: "asc",
           },
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwic2NvcGUiOiJBRE1JTiIsImlzcyI6ImFiYy5jb20iLCJ1YXYiOjk0MDc5MzAxLCJleHAiOjE3MjMzODk3MzMsImlhdCI6MTcyMzM4NjEzMywiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20ifQ.t37ctL0mM9SsCR7iXapkNzoQ8NhbaOQlobx67SbR5gIKIXixFFFhh-2VNC-6j-GGox7-R6b5VI2xKnuSpJb6Dg`,
+            Authorization: token,
           },
         }
       );
@@ -54,7 +57,7 @@ const ProductTable = () => {
             direction: "asc",
           },
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwic2NvcGUiOiJBRE1JTiIsImlzcyI6ImFiYy5jb20iLCJ1YXYiOjk0MDc5MzAxLCJleHAiOjE3MjMzODk3MzMsImlhdCI6MTcyMzM4NjEzMywiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20ifQ.t37ctL0mM9SsCR7iXapkNzoQ8NhbaOQlobx67SbR5gIKIXixFFFhh-2VNC-6j-GGox7-R6b5VI2xKnuSpJb6Dg`,
+            Authorization: token,
           },
         }
       );
@@ -90,7 +93,7 @@ const ProductTable = () => {
         `http://117.103.207.132:8080/furni-shop/admin/products/${productId}`,
         {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwic2NvcGUiOiJBRE1JTiIsImlzcyI6ImFiYy5jb20iLCJ1YXYiOjk0MDc5MzAxLCJleHAiOjE3MjMzODk3MzMsImlhdCI6MTcyMzM4NjEzMywiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20ifQ.t37ctL0mM9SsCR7iXapkNzoQ8NhbaOQlobx67SbR5gIKIXixFFFhh-2VNC-6j-GGox7-R6b5VI2xKnuSpJb6Dg`,
+            Authorization: token,
           },
         }
       );

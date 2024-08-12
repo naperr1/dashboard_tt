@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 const EditUser = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
+  const accessToken = localStorage.getItem("accessToken");
 
   const [user, setUser] = useState({
     email: "",
@@ -17,7 +18,7 @@ const EditUser = () => {
     isActive: "",
   });
 
-  const token = `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwic2NvcGUiOiJBRE1JTiIsImlzcyI6ImFiYy5jb20iLCJ1YXYiOjk0MDc5MzAxLCJleHAiOjE3MjMzOTY5NzQsImlhdCI6MTcyMzM5MzM3NCwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20ifQ.sqvLq-vQ6E8VizXmmqSP_1QjznumAdCt-Nmc_ma1pptWyMAYrV04_RRLEe_tydg0eXNoz-5hpVqf9VLonDCmhg`;
+  const token = `Bearer ${accessToken}`;
 
   useEffect(() => {
     axios
