@@ -18,6 +18,12 @@ import Login from "./page/Login";
 import Register from "./page/Register";
 import ForgotPW from "./page/ForgotPW";
 import { useEffect } from "react";
+import OrderDetails from "./components/OrderDetails";
+import ProductDetails from "./components/ProductDetails";
+import ProductDetailsEdit from "./components/ProductDetailsEdit";
+import AddProductDetails from "./components/AddProductDetails";
+import ProductImage from "./components/ProductImage";
+import AddNewProduct from "./components/AddNewProduct";
 
 function App() {
   const location = useLocation();
@@ -46,11 +52,29 @@ function App() {
           <Route path="/forgotpass" element={<ForgotPW />} />
           <Route path="/" element={<Dashboard />} />
           <Route path="/product" element={<Product />} />
-          <Route path="/product/:id" element={<EditProduct />} />
+          <Route path="/product/:productId" element={<EditProduct />} />
+          <Route
+            path="/product/productDetails/:productDetailsId"
+            element={<ProductDetails />}
+          />
+          <Route
+            path="/product/productDetails/edit/:productDetailsId"
+            element={<ProductDetailsEdit />}
+          />
+          <Route
+            path="/product/productDetails/add"
+            element={<AddProductDetails />}
+          />
+          <Route path="/product/add_new_product" element={<AddNewProduct />} />
+          <Route
+            path="/product/productImage/:productImageId"
+            element={<ProductImage />}
+          />
           <Route path="/user" element={<User />} />
           <Route path="/user/:userId" element={<EditUser />} />
           <Route path="/user/newuser" element={<PostNewUser />} />
           <Route path="/order" element={<Order />} />
+          <Route path="/order/:orderId" element={<OrderDetails />} />
           <Route path="/category" element={<Category />} />
           <Route path="/voucher" element={<Voucher />} />
         </Routes>

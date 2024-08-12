@@ -33,14 +33,19 @@ const Login = () => {
         localStorage.setItem("avatarUrl", userResponse.avatarUrl);
         localStorage.setItem("firstName", userResponse.firstName);
         localStorage.setItem("lastName", userResponse.lastName);
-        toast.success("Login Successfully");
-        navigate("/");
+
+        if (userResponse.role === "ADMIN") {
+          toast.success("Login Successfully");
+          navigate("/");
+        } else {
+          toast.error("You are not an admin");
+        }
       } else {
-        toast.success("Email or password wrong");
+        toast.error("Email or password incorrect");
         console.error("Error Logout");
       }
     } catch (error) {
-      toast.error("Email or password wrong");
+      toast.error("Email or password incorrect");
       console.error("Error login", error);
     }
   };
@@ -93,23 +98,26 @@ const Login = () => {
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
 
-        const refreshToken = localStorage.getItem("refreshToken");
-        if (refreshToken) {
-          try {
-            await refreshAccessToken();
+        try {
+          await refreshAccessToken();
 
-            const newAccessToken = localStorage.getItem("accessToken");
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${newAccessToken}`;
+          const newAccessToken = localStorage.getItem("accessToken");
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${newAccessToken}`;
 
-            return axios(originalRequest);
-          } catch (refreshError) {
-            console.error("Error new access token", refreshError);
-            navigate("/login");
-          }
-        } else {
+          return axios(originalRequest);
+        } catch (refreshError) {
+          console.error("Error refreshing access token", refreshError);
+
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("avatarUrl");
+          localStorage.removeItem("firstName");
+          localStorage.removeItem("lastName");
+
           navigate("/login");
+          return Promise.reject(refreshError);
         }
       }
 

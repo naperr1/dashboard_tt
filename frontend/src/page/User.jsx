@@ -11,10 +11,10 @@ const User = () => {
     <div className="mt-[32px]">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="font-bold text-2xl">User</h1>
+          <h1 className="font-bold text-2xl">User Lists</h1>
         </div>
         <div class="flex items-center space-x-4">
-          <div class="relative">
+          {/* <div class="relative">
             <input
               type="text"
               placeholder="Search user"
@@ -29,10 +29,12 @@ const User = () => {
               <span>Filter By</span>
               <IoIosArrowDown className="h-4 w-4 text-gray-600" />
             </button>
-          </div>
+          </div> */}
 
           <button class="bg-blue-500 text-white px-[5px] py-[5px] rounded-full hover:bg-blue-600">
-            <Link to="/user/newuser">Add New User</Link>
+            <Link to="/user/newuser" className="px-3">
+              Add New User
+            </Link>
           </button>
         </div>
       </div>

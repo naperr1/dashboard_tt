@@ -4,22 +4,25 @@ import { Link } from "react-router-dom";
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { toast } from "react-toastify";
+import UserStatistics from "./UserStatistics";
+import { FaSort } from "react-icons/fa";
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState("userId");
+  const [direction, setDirection] = useState("asc");
   const accessToken = localStorage.getItem("accessToken");
-
   const token = `Bearer ${accessToken}`;
 
   useEffect(() => {
     fetchUsers();
-  }, [page]);
+  }, [page, sortBy, direction]);
 
   const fetchUsers = () => {
     axios
       .get(
-        `http://117.103.207.132:8080/furni-shop/admin/users?page=${page}&pageSize=5&sortBy=userId&direction=asc`,
+        `http://117.103.207.132:8080/furni-shop/admin/users?page=${page}&pageSize=5&sortBy=${sortBy}&direction=${direction}`,
         {
           headers: {
             Authorization: token,
@@ -36,6 +39,12 @@ const UserTable = () => {
       .catch((error) => {
         console.error("Error get api user", error);
       });
+  };
+
+  const handleSort = (field) => {
+    const isAsc = sortBy === field && direction === "asc";
+    setDirection(isAsc ? "desc" : "asc");
+    setSortBy(field);
   };
 
   const handleBanUser = (userId) => {
@@ -86,21 +95,50 @@ const UserTable = () => {
 
   return (
     <div>
+      <UserStatistics />
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5 border-solid border-[#d5d5d5]">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-white">
             <tr className="border-b">
-              <th scope="col" className="px-6 py-3">
-                ID
+              <th
+                scope="col"
+                className="px-6 py-3 cursor-pointer"
+                onClick={() => handleSort("userId")}
+              >
+                <span className="flex items-center">
+                  ID
+                  <FaSort />
+                </span>
               </th>
-              <th scope="col" className="px-6 py-3">
-                NAME
+              <th
+                scope="col"
+                className="px-6 py-3 cursor-pointer"
+                onClick={() => handleSort("firstName")}
+              >
+                <span className="flex items-center">
+                  NAME
+                  <FaSort />
+                </span>
               </th>
-              <th scope="col" className="px-6 py-3">
-                EMAIL
+              <th
+                scope="col"
+                className="px-6 py-3 cursor-pointer"
+                onClick={() => handleSort("email")}
+              >
+                <span className="flex items-center">
+                  EMAIL
+                  <FaSort />
+                </span>
               </th>
-              <th scope="col" className="px-6 py-3">
-                ROLE
+              <th
+                scope="col"
+                className="px-6 py-3 cursor-pointer"
+                onClick={() => handleSort("role")}
+              >
+                <span className="flex items-center">
+                  ROLE
+                  <FaSort />
+                </span>
               </th>
               <th scope="col" className="px-6 py-3">
                 STATUS

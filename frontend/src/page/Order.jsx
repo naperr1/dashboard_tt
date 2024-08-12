@@ -12,7 +12,7 @@ const Order = () => {
         <div>
           <h1 className="font-bold text-2xl">Order Lists</h1>
         </div>
-        <div class="flex items-center space-x-4">
+        {/* <div class="flex items-center space-x-4">
           <div class="relative">
             <input
               type="text"
@@ -33,7 +33,7 @@ const Order = () => {
           <button class="bg-blue-500 text-white px-[5px] py-[5px] rounded-full hover:bg-blue-600">
             Add New Product
           </button>
-        </div>
+        </div> */}
       </div>
       <OrderTable />
     </div>
