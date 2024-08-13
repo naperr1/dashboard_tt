@@ -4,10 +4,13 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
   const { productDetailsId } = useParams();
   const [productDetails, setProductDetails] = useState([]);
+  const accessToken = localStorage.getItem("accessToken");
+  const token = `Bearer ${accessToken}`;
   localStorage.setItem("productDetails", productDetailsId);
 
   useEffect(() => {
@@ -17,7 +20,12 @@ const ProductDetails = () => {
   const fetchProductDetails = async () => {
     try {
       const response = await axios.get(
-        `http://117.103.207.132:8080/furni-shop/admin/productDetails/${productDetailsId}`
+        `http://117.103.207.132:8080/furni-shop/admin/productDetails/${productDetailsId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
 
       if (response.data.code === 1000) {
@@ -50,16 +58,19 @@ const ProductDetails = () => {
             (detail) => detail.productDetailId !== productDetailId
           )
         );
+        toast.success("Delete product details successfully");
       } else {
+        toast.error("Failed to delete product details");
         console.error("Failed to delete product detail");
       }
     } catch (error) {
+      toast.error("Failed to delete product details");
       console.error("Error deleting product detail:", error);
     }
   };
 
   return (
-    <div className="mt-[32px]">
+    <div className="mt-[64px] p-8">
       <div className="flex justify-between">
         <div>
           <h1 className="font-bold text-2xl">Product Details</h1>

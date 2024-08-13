@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -26,8 +27,10 @@ const Header = () => {
       localStorage.removeItem("firstName");
       localStorage.removeItem("lastName");
 
+      toast.success("Logout successfully");
       navigate("/login");
     } catch (error) {
+      toast.error("Error logout");
       console.error("Error Logout", error);
     }
   };
@@ -55,7 +58,7 @@ const Header = () => {
                   <div>
                     <button
                       type="button"
-                      className="flex text-sm rounded-full focus:ring-4 focus:ring-gray-300 flex items-center"
+                      className="flex text-sm rounded-full focus:ring-4 focus:ring-gray-300 items-center"
                       aria-expanded={dropdownOpen}
                       onClick={toggleDropdown}
                     >
@@ -93,7 +96,7 @@ const Header = () => {
                     aria-labelledby="user-menu"
                   >
                     <Link
-                      to="/info"
+                      to="/user/info"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       role="menuitem"
                     >

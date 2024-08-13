@@ -81,7 +81,7 @@ const EditUser = () => {
   };
 
   return (
-    <div className="mt-[32px]">
+    <div className="mt-[64px] p-8">
       <div>
         <h1 className="font-bold text-2xl">Edit User</h1>
       </div>

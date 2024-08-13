@@ -104,6 +104,7 @@ const LineChart = () => {
           startDate={startDate}
           endDate={endDate}
           minDate={startDate}
+          maxDate={new Date()}
           className="border"
         />
       </div>

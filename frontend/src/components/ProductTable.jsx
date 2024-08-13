@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { FaSort } from "react-icons/fa";
+import Loading from "./Loading";
 
 const ProductTable = () => {
   const [products, setProducts] = useState([]);
@@ -71,7 +72,6 @@ const ProductTable = () => {
         }
       );
       setCategories(response.data.result.data);
-      console.log(categories);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -95,8 +95,6 @@ const ProductTable = () => {
   };
 
   const handleDelete = async (productId) => {
-    console.log(productId);
-
     try {
       await axios.delete(
         `http://117.103.207.132:8080/furni-shop/admin/products/${productId}`,
@@ -109,8 +107,13 @@ const ProductTable = () => {
       setProducts(
         products.filter((product) => product.productId !== productId)
       );
+      toast.success("Delete product successfully");
     } catch (error) {
-      console.error("Error deleting product:", error);
+      toast.error("Delete product details before deleting the product");
+      console.error(
+        "Delete product details before deleting the product: ",
+        error
+      );
     }
   };
 
@@ -126,7 +129,6 @@ const ProductTable = () => {
         }
       );
       toast.success(res.data.message);
-
       setProducts(
         products.map((product) =>
           product.productId === productId
@@ -194,73 +196,78 @@ const ProductTable = () => {
         </thead>
 
         <tbody>
-          {products.map((product) => (
-            <tr
-              className="bg-white border-b text-black text-sm h-[50px]"
-              key={product.productId}
-            >
-              <td className="px-6 py-4">
-                <Link to={`/product/productImage/${product.productId}`}>
-                  {product.productImages && product.productImages.length > 0 ? (
-                    <img
-                      src={product.productImages[0]}
-                      alt={product.name}
-                      className="w-[40px] h-[40px] ml-[20px]"
-                    />
-                  ) : (
-                    <div className="w-[40px] h-[40px] ml-[20px] bg-gray-300 flex items-center justify-center">
-                      No Image
-                    </div>
-                  )}
-                </Link>
-              </td>
-              <td
-                scope="row"
-                className="px-6 py-4 text-black whitespace-nowrap dark:text-black"
+          {products.length === 0 ? (
+            <Loading />
+          ) : (
+            products.map((product) => (
+              <tr
+                className="bg-white border-b text-black text-sm h-[50px]"
+                key={product.productId}
               >
-                <Link to={`/product/productDetails/${product.productId}`}>
-                  {product.name}
-                </Link>
-              </td>
-              <td className="px-6 py-4">
-                {getCategoryName(product.categoryId)}
-              </td>
-              <td className="px-6 py-4">
-                {`${(product.minPrice ?? 0).toLocaleString("vi-VN")}đ - ${(
-                  product.maxPrice ?? 0
-                ).toLocaleString("vi-VN")}đ`}
-              </td>
-              <td className="px-6 py-4">{product.soldCount}</td>
-              <td
-                className={`px-6 py-4 cursor-pointer `}
-                onClick={() =>
-                  toggleProductStatus(product.productId, product.enable)
-                }
-              >
-                <div
-                  className={`text-sm text-center p-[5px] rounded-[3px] ${
-                    product.enable === 1 ? "bg-green-500" : "bg-red-500"
-                  } text-white`}
+                <td className="px-6 py-4">
+                  <Link to={`/product/productImage/${product.productId}`}>
+                    {product.productImages &&
+                    product.productImages.length > 0 ? (
+                      <img
+                        src={product.productImages[0]}
+                        alt={product.name}
+                        className="w-[50px] h-[50px] rounded"
+                      />
+                    ) : (
+                      <div className="w-[50px] h-[50px] bg-gray-300 flex items-center justify-center text-center rounded">
+                        No Image
+                      </div>
+                    )}
+                  </Link>
+                </td>
+                <td
+                  scope="row"
+                  className="px-6 py-4 text-black whitespace-nowrap dark:text-black"
                 >
-                  {product.enable === 1 ? "Enable" : "Disable"}
-                </div>
-              </td>
-              <td className="px-6 py-4 flex my-[20px]">
-                <Link
-                  to={`/product/${product.productId}`}
-                  className="font-medium pr-[20px] text-lg hover:text-blue-500"
+                  <Link to={`/product/productDetails/${product.productId}`}>
+                    {product.name}
+                  </Link>
+                </td>
+                <td className="px-6 py-4">
+                  {getCategoryName(product.categoryId)}
+                </td>
+                <td className="px-6 py-4">
+                  {`${(product.minPrice ?? 0).toLocaleString("vi-VN")}đ - ${(
+                    product.maxPrice ?? 0
+                  ).toLocaleString("vi-VN")}đ`}
+                </td>
+                <td className="px-6 py-4">{product.soldCount}</td>
+                <td
+                  className={`px-6 py-4 cursor-pointer`}
+                  onClick={() =>
+                    toggleProductStatus(product.productId, product.enable)
+                  }
                 >
-                  <FaRegEdit />
-                </Link>
-                <button
-                  onClick={() => handleDelete(product.productId)}
-                  className="font-medium text-lg hover:text-red-500"
-                >
-                  <FaRegTrashAlt />
-                </button>
-              </td>
-            </tr>
-          ))}
+                  <div
+                    className={`text-sm text-center p-[5px] rounded-[3px] ${
+                      product.enable === 1 ? "bg-green-500" : "bg-red-500"
+                    } text-white`}
+                  >
+                    {product.enable === 1 ? "Enable" : "Disable"}
+                  </div>
+                </td>
+                <td className="px-6 py-4 flex my-[20px]">
+                  <Link
+                    to={`/product/${product.productId}`}
+                    className="font-medium pr-[20px] text-lg hover:text-blue-500"
+                  >
+                    <FaRegEdit />
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(product.productId)}
+                    className="font-medium text-lg hover:text-red-500"
+                  >
+                    <FaRegTrashAlt />
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
 

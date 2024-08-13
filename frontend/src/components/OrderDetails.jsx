@@ -37,7 +37,7 @@ const OrderDetails = () => {
   }
 
   return (
-    <div className="mt-[32px]">
+    <div className="mt-[64px] p-8">
       <div>
         <h1 className="font-bold text-2xl mb-4">Order Details</h1>
         <table className="min-w-full bg-white border border-gray-300">
@@ -112,7 +112,11 @@ const OrderDetails = () => {
                   <strong>Material:</strong> {item.material}
                 </p>
                 <p>
-                  <strong>Price:</strong> {item.price} VND
+                  <strong>Price:</strong>
+                  {item.price.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
                 </p>
                 <p>
                   <strong>Quantity:</strong> {item.count}

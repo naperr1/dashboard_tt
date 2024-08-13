@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const EditProduct = () => {
   const { productId } = useParams();
@@ -15,28 +16,26 @@ const EditProduct = () => {
   const token = `Bearer ${accessToken}`;
 
   useEffect(() => {
-    // Fetch thông tin sản phẩm
-    const fetchProduct = async () => {
-      try {
-        const response = await axios.get(
-          `http://117.103.207.132:8080/furni-shop/admin/products/${productId}`,
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-        setProduct({
-          name: response.data.result.name,
-          description: response.data.result.description,
-          categoryId: response.data.result.categoryId,
-        });
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      }
-    };
+    // const fetchProduct = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       `http://117.103.207.132:8080/furni-shop/admin/products/${productId}`,
+    //       {
+    //         headers: {
+    //           Authorization: token,
+    //         },
+    //       }
+    //     );
+    //     setProduct({
+    //       name: response.data.result.name,
+    //       description: response.data.result.description,
+    //       categoryId: response.data.result.categoryId,
+    //     });
+    //   } catch (error) {
+    //     console.error("Error fetching product:", error);
+    //   }
+    // };
 
-    // Fetch danh sách categories
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
@@ -59,11 +58,10 @@ const EditProduct = () => {
       }
     };
 
-    fetchProduct();
+    // fetchProduct();
     fetchCategories();
   }, [productId, token]);
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct((prevProduct) => ({
@@ -72,7 +70,6 @@ const EditProduct = () => {
     }));
   };
 
-  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -85,14 +82,16 @@ const EditProduct = () => {
           },
         }
       );
+      toast.success("Updated product successfully");
       navigate(`/product`);
     } catch (error) {
+      toast.error("Error updating product:");
       console.error("Error updating product:", error);
     }
   };
 
   return (
-    <div className="mt-[32px]">
+    <div className="mt-[64px] p-8">
       <div>
         <h1 className="font-bold text-2xl">Edit Product</h1>
       </div>

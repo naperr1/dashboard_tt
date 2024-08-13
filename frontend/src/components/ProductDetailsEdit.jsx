@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const ProductDetailsEdit = () => {
   const { productDetailsId } = useParams();
@@ -72,14 +73,16 @@ const ProductDetailsEdit = () => {
           },
         }
       );
+      toast.success("Updated product details successfully");
       navigate(`/product/productDetails/${productId}`);
     } catch (error) {
+      toast.error("Error while updating product details");
       console.error("Error updating product details", error);
     }
   };
 
   return (
-    <div className="mt-[32px]">
+    <div className="mt-[64px] p-8">
       <div>
         <h1 className="font-bold text-2xl">Product Details Edit</h1>
       </div>

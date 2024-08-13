@@ -22,9 +22,10 @@ const ProductImage = () => {
             },
           }
         );
+        console.log(response.data.result.imageResponses);
 
         if (response.data.code === 1000) {
-          setProductImages(response.data.result.images);
+          setProductImages(response.data.result.imageResponses);
         } else {
           console.error("Failed to fetch product images");
         }
@@ -80,8 +81,29 @@ const ProductImage = () => {
     setSelectedImages(selectedImages.filter((_, i) => i !== index));
   };
 
+  const handleDeleteImage = async (productImageId) => {
+    try {
+      await axios.delete(
+        `http://117.103.207.132:8080/furni-shop/admin/products/delete-image/${productImageId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      setProductImages(
+        productImages.filter((image) => image.productImageId !== productImageId)
+      );
+      toast.success("Delete image successfully");
+    } catch (error) {
+      toast.error("Error deleting image");
+      console.error("Error deleting image:", error);
+    }
+  };
+
   return (
-    <div className="mt-[32px]">
+    <div className="mt-[64px] p-8">
       <div>
         <h1 className="font-bold text-2xl">Product Image</h1>
       </div>
@@ -90,22 +112,29 @@ const ProductImage = () => {
           productImages.map((image, index) => (
             <div key={index} className="relative">
               <img
-                src={image}
+                src={image.imageUrl}
                 alt={`Product Image ${index + 1}`}
-                className="object-cover h-32 w-full"
+                className="object-cover h-64 w-full"
               />
+              <button
+                onClick={() => handleDeleteImage(image.productImageId)}
+                className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 text-xs rounded"
+              >
+                Remove
+              </button>
             </div>
           ))
         ) : (
           <div className="col-span-4 text-center text-gray-500">No Image</div>
         )}
       </div>
+
       <div className="mt-5">
         <input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+          className="block text-sm text-gray-900 border border-gray-300 cursor-pointer bg-gray-50 w-1/4 "
           multiple
         />
       </div>
@@ -118,7 +147,7 @@ const ProductImage = () => {
                 <img
                   src={URL.createObjectURL(file)}
                   alt={`Selected Image ${index + 1}`}
-                  className="object-cover h-32 w-full"
+                  className="object-cover h-64 w-full"
                 />
                 <button
                   onClick={() => handleRemoveSelectedImage(index)}

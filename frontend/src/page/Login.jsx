@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import gg from "../assets/google.jpg";
 import login from "../assets/login.jpg";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import { toast } from "react-toastify";
 
 const Login = () => {
@@ -15,7 +14,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "http://117.103.207.132:8080/furni-shop/auth/login",
         {
           email,
@@ -42,7 +41,6 @@ const Login = () => {
         }
       } else {
         toast.error("Email or password incorrect");
-        console.error("Error Logout");
       }
     } catch (error) {
       toast.error("Email or password incorrect");
@@ -50,119 +48,59 @@ const Login = () => {
     }
   };
 
-  const refreshAccessToken = async () => {
-    const refreshToken = localStorage.getItem("refreshToken");
-
-    if (!refreshToken) {
-      console.error("No refreshToken created token");
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        "http://117.103.207.132:8080/furni-shop/auth/refresh-token",
-        {
-          refreshToken,
-        }
-      );
-
-      if (response.data.code === 1000) {
-        const { accessToken } = response.data.result;
-        localStorage.setItem("accessToken", accessToken);
-      } else {
-        console.error("Error new access token ");
-      }
-    } catch (error) {
-      console.error("Error new access token", error);
-    }
-  };
-
-  axios.interceptors.request.use(
-    (config) => {
-      const accessToken = localStorage.getItem("accessToken");
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
-
-  axios.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      const originalRequest = error.config;
-
-      if (error.response.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
-
-        try {
-          await refreshAccessToken();
-
-          const newAccessToken = localStorage.getItem("accessToken");
-          axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${newAccessToken}`;
-
-          return axios(originalRequest);
-        } catch (refreshError) {
-          console.error("Error refreshing access token", refreshError);
-
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          localStorage.removeItem("avatarUrl");
-          localStorage.removeItem("firstName");
-          localStorage.removeItem("lastName");
-
-          navigate("/login");
-          return Promise.reject(refreshError);
-        }
-      }
-
-      return Promise.reject(error);
-    }
-  );
-
   return (
     <div
-      className="bg-[url('../assets/register.jpg')] bg-cover bg-center min-h-screen flex items-center"
+      className="bg-[url('../assets/register.jpg')] bg-cover bg-center min-h-screen flex items-center justify-center"
       style={{ backgroundImage: `url(${login})` }}
     >
-      <div className="mx-auto bg-white rounded-lg flex items-center py-8 px-12 ">
-        <form onSubmit={handleLogin} className="flex flex-col gap-3">
-          <h1 className="text-3xl font-bold text-center">Đăng nhập</h1>
-          <div className="border border-gray-400 px-3 py-1 rounded-lg">
-            <h5 className="uppercase text-gray-700 cursor-default">
-              Địa chỉ email
-            </h5>
-            <input
-              type="email"
-              placeholder="john@example.com"
-              className="outline-none"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+      <div className="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="py-8 px-10">
+          <form onSubmit={handleLogin} className="flex flex-col gap-6">
+            <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-6">
+              Đăng nhập
+            </h1>
 
-          <div className="border border-gray-400 px-3 py-1 rounded-lg">
-            <h5 className="uppercase text-gray-700 cursor-default">Mật khẩu</h5>
-            <input
-              type="password"
-              placeholder="012..."
-              className="outline-none"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className="flex items-center justify-end">
-            <Link to="/forgotpass">Quên mật khẩu?</Link>
-          </div>
-          <button className="uppercase text-white bg-black rounded-md p-3">
-            Đăng nhập
-          </button>
-        </form>
+            <div className="border border-gray-300 px-4 py-3 rounded-lg">
+              <h5 className="uppercase text-sm text-gray-600 mb-1">
+                Địa chỉ email
+              </h5>
+              <input
+                type="email"
+                placeholder="john@example.com"
+                className="w-full outline-none text-lg text-gray-800"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="border border-gray-300 px-4 py-3 rounded-lg">
+              <h5 className="uppercase text-sm text-gray-600 mb-1">Mật khẩu</h5>
+              <input
+                type="password"
+                placeholder="********"
+                className="w-full outline-none text-lg text-gray-800"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            <div className="flex items-center justify-between text-sm text-gray-500">
+              <Link to="/forgotpass" className="hover:underline">
+                Quên mật khẩu?
+              </Link>
+            </div>
+            <div className="flex items-center text-sm text-gray-500">
+              Bạn chưa có tài khoản?
+              <Link to="/register" className="hover:underline">
+                Đăng kí
+              </Link>
+            </div>
+
+            <button className="uppercase text-lg font-bold text-white bg-black rounded-md py-3 mt-6 hover:bg-gray-800 transition duration-300">
+              Đăng nhập
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

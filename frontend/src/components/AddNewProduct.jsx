@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AddNewProduct = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
+  const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
   const token = `Bearer ${accessToken}`;
 
   useEffect(() => {
-    // Fetch categories from the API with authorization header
     axios
       .get(
         "http://117.103.207.132:8080/furni-shop/categories/category?page=1&pageSize=100&sortBy=categoryId&direction=asc",
@@ -59,15 +61,17 @@ const AddNewProduct = () => {
       )
       .then((response) => {
         console.log("Product added successfully:", response.data);
-        // Thêm thông báo hoặc xử lý sau khi thêm sản phẩm thành công
+        toast.success("Product added successfully");
+        navigate("/product");
       })
       .catch((error) => {
         console.error("Error adding product:", error);
+        toast.error("Error adding product");
       });
   };
 
   return (
-    <div className="mt-[32px]">
+    <div className="mt-[64px] p-8">
       <div>
         <h1 className="font-bold text-2xl">Add New Product</h1>
       </div>

@@ -82,14 +82,14 @@ const AddProductDetails = () => {
         formValues,
         {
           headers: {
-            Authorization: token, // Gắn token vào header
+            Authorization: token,
           },
         }
       );
 
       if (response.data.code === 1000) {
         toast.success("Product detail added successfully!");
-        navigate(`/product/productDetails/${productDetails}`); // Điều hướng đến trang chi tiết sản phẩm sau khi thêm mới
+        navigate(`/product/productDetails/${productDetails}`);
       } else {
         toast.error("Failed to add product detail.");
       }
@@ -100,7 +100,7 @@ const AddProductDetails = () => {
   };
 
   return (
-    <div className="mt-[32px]">
+    <div className="mt-[64px] p-8">
       <div>
         <h1 className="font-bold text-2xl">Add New Product Detail</h1>
       </div>

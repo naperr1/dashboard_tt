@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <>
       <SideBar />
-      <div class="p-4 sm:ml-64 mt-[32px]">
+      <div class="p-4 sm:ml-64 mt-[64px]">
         <Dashboard />
       </div>
     </>
