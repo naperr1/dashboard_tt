@@ -5,9 +5,6 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CategoryTable from "./CategoryTable";
 
-// Initialize Toastify
-// toast.configure();
-
 const CategoryCategory = () => {
 
     const accessToken = localStorage.getItem("accessToken");

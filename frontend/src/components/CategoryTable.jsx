@@ -69,7 +69,6 @@ const CategoryTable = ({ dataSource, columnsConfig, dropdownOptions, pageSize, s
 
                 if (onEditSave) {
                     await onEditSave(updatedRow);
-                    // setRefresh(prev => !prev);
                 }
 
                 newData.splice(index, 1, updatedRow);

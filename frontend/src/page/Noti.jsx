@@ -15,7 +15,7 @@ const Noti = () => {
     event.preventDefault();
 
     const newNotification = {
-     orderId,
+      orderId,
       userId,
       notificationType
     };

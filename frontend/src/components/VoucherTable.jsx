@@ -13,6 +13,16 @@ const VoucherTable = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('vi-VN', {
+          style: 'currency',
+          currency: 'VND',
+          minimumFractionDigits: 0,
+        }).format(value);
+      };
+      
+
+
     useEffect(() => {
         const fetchVoucherData = async () => {
             try {
@@ -45,7 +55,7 @@ const VoucherTable = () => {
     }, []);
 
     const handleSaveVoucher = async (updatedRow) => {
-        const { voucherId, ...updatedData } = updatedRow; 
+        const { voucherId, ...updatedData } = updatedRow;
 
         try {
             await axios.put(`http://117.103.207.132:8080/furni-shop/vouchers/admin/update/${voucherId}`, updatedData, {
@@ -164,6 +174,7 @@ const VoucherTable = () => {
             width: 150,
             editable: true,
             sorter: (a, b) => a.minValueOrder - b.minValueOrder,
+            render: (value) => formatCurrency(value),
         },
         {
             title: 'Giá trị tối đa',
@@ -173,6 +184,7 @@ const VoucherTable = () => {
             width: 120,
             editable: true,
             sorter: (a, b) => a.maxValueDiscount - b.maxValueDiscount,
+            render: (value) => formatCurrency(value),
         },
         {
             title: 'Số lượng',
@@ -285,7 +297,7 @@ export default VoucherTable;
 //     }, []);
 
 //     const handleSaveVoucher = async (updatedRow) => {
-//         const { voucherId, ...updatedData } = updatedRow; 
+//         const { voucherId, ...updatedData } = updatedRow;
 
 //         try {
 //             await axios.put(`http://117.103.207.132:8080/furni-shop/vouchers/admin/update/${voucherId}`, updatedData, {

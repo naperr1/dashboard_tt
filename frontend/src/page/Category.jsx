@@ -1,37 +1,3 @@
-// import { } from "react";
-// import CategoryCategory from "../components/CategoryCategory";
-// import CategoryColor from "../components/CategoryColor";
-// import CategoryMaterial from "../components/CategoryMaterial"
-// import CategorySize from "../components/CategorySize";
-
-// const Category = () => {
-//   return (
-//     <div className="">
-//       <div className="px-2 py-4 flex flex-col gap-4 mt-12">
-//         <div className="">
-//           <CategoryCategory />
-//         </div>
-//         <div className="">
-//           <CategoryColor />
-//         </div>
-//         <div className="">
-//           <CategorySize />
-//         </div>
-//         <div className="">
-//           <CategoryMaterial />
-//         </div>
-//       </div>
-//     </div>
-//   );
-
-// };
-
-// export default Category;
-
-
-
-
-
 import { } from "react";
 import CategoryCategory from "../components/CategoryCategory";
 import CategoryColor from "../components/CategoryColor";
