@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import login from "../assets/login.jpg";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 import { toast } from "react-toastify";
@@ -53,10 +53,10 @@ const Login = () => {
       className="bg-[url('../assets/register.jpg')] bg-cover bg-center min-h-screen flex items-center justify-center"
       style={{ backgroundImage: `url(${login})` }}
     >
-      <div className="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+      <div className="w-[60%] max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="py-8 px-10">
           <form onSubmit={handleLogin} className="flex flex-col gap-6">
-            <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-6">
+            <h1 className="text-4xl font-extrabold text-center text-gray-800">
               Đăng nhập
             </h1>
 
@@ -89,16 +89,16 @@ const Login = () => {
                 Quên mật khẩu?
               </Link>
             </div>
-            <div className="flex items-center text-sm text-gray-500">
+            <button className="uppercase text-lg font-bold text-white bg-black rounded-md py-3 hover:bg-gray-800 transition duration-300">
+              Đăng nhập
+            </button>
+            <div className="flex items-center text-sm text-gray-500 w-auto mx-auto cursor-default">
               Bạn chưa có tài khoản?
+              &nbsp;
               <Link to="/register" className="hover:underline">
                 Đăng kí
               </Link>
             </div>
-
-            <button className="uppercase text-lg font-bold text-white bg-black rounded-md py-3 mt-6 hover:bg-gray-800 transition duration-300">
-              Đăng nhập
-            </button>
           </form>
         </div>
       </div>

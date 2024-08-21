@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { toast } from "react-toastify";
 
 const ProductDetails = () => {
@@ -75,7 +74,7 @@ const ProductDetails = () => {
         <div>
           <h1 className="font-bold text-2xl">Product Details</h1>
         </div>
-        <div class="flex items-center space-x-4">
+        <div className="flex items-center space-x-4">
           <Link
             to="/product/productDetails/add"
             class="bg-blue-500 text-white py-[5px] rounded-full hover:bg-blue-600 px-3"

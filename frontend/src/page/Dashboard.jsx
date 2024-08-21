@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import icon_user from "../assets/icon_user.png";
 import icon_order from "../assets/icon_order.png";
